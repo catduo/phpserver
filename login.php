@@ -3,7 +3,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] != "POST") {
         echo "<form method='post'>";
-        echo "<input type='text' name='username'><br/>";
+        echo "<input type='text' name='email'><br/>";
         echo "<input type='password' name='password'><br/>";
         echo "<input type='submit'><br/>";
         echo "</form>";
@@ -13,12 +13,12 @@
     $db = new DB();
     $db->connect($ip,$username,$password,"test");
 
-    if (!isset($_POST['username']) or !isset($_POST['password'])) {
+    if (!isset($_POST['email']) or !isset($_POST['password'])) {
         header('HTTP/1.0 500 Bad Request');
         return;
     }
 
-    $auth = $db->authenticate($_POST['username'],$_POST['password']);
+    $auth = $db->authenticate($_POST['email'],$_POST['password']);
     if ($auth) {
         header('HTTP/1.0 200 OK');
     } else {

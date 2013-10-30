@@ -8,6 +8,10 @@
     
     $users = $db->getUsers();
     foreach ($users as $user) {
-        echo "<div><b>$user[username]</b>: $user[created]</div>";
+        unset($user['passwordhash']);
+        echo "<pre>";
+        print_r($user);
+        echo "</pre>";
+        //echo "<div><b>$user[email]</b>: $user[created]</div>";
     }
 ?>

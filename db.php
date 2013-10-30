@@ -21,24 +21,24 @@
         }
 
         public function createTables() {
-            mysqli_query($this->conn,"CREATE TABLE users (username VARCHAR(255),passwordhash VARCHAR(255),created DATETIME)");
+            mysqli_query($this->conn,"CREATE TABLE users (id MEDIUMINT NOT NULL AUTO_INCREMENT, email VARCHAR(255), display VARCHAR(255),passwordhash VARCHAR(255),created DATETIME,PRIMARY KEY (id))");
         }
 
-        public function addUser($name,$password) {
+        public function addUser($email,$password) {
             $hash = crypt($password);
             $now = date( 'Y-m-d H:i:s');
-            if ($this->getUser($name) != null) throw new Exception("Username already exists!");
-            mysqli_query($this->conn,"INSERT INTO users VALUES ('$name','$hash','$now')");
+            if ($this->findUser($name) != null) throw new Exception("Username already exists!");
+            mysqli_query($this->conn,"INSERT INTO users VALUES (NULL,'$email','','$hash','$now')");
         }
 
-        public function authenticate($name,$password) {
+        public function authenticate($email,$password) {
             $hash = crypt($password);
-            $user = $this->getUser($name);
+            $user = $this->findUser($email);
             return crypt($password, $user['passwordhash']) === $user['passwordhash'];
         }
 
-        public function getUser($name) {
-            $result = mysqli_query($this->conn,"SELECT * FROM users WHERE username='$name'");
+        public function findUser($email) {
+            $result = mysqli_query($this->conn,"SELECT * FROM users WHERE email='$email'");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             if (count($data) == 0) return null;
             return $data[0];
