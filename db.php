@@ -44,6 +44,10 @@
             return $data[0];
         }
 
+        public function setDisplayName($email,$display) {
+            mysqli_query($this->conn,"UPDATE users SET display='$display' WHERE email='$email'");
+        }
+
         public function getUsers() {
             $result = mysqli_query($this->conn,"SELECT * FROM users");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
