@@ -22,6 +22,7 @@
 
         public function createTables() {
             mysqli_query($this->conn,"CREATE TABLE users (id MEDIUMINT NOT NULL AUTO_INCREMENT, email VARCHAR(255), display VARCHAR(255),passwordhash VARCHAR(255),created DATETIME,PRIMARY KEY (id))");
+            mysqli_query($this->conn,"CREATE TABLE user_game_data (id MEDIUMINT NOT NULL AUTO_INCREMENT, user_id MEDIUMINT NOT NULL, property VARCHAR(255), value VARCHAR(255),PRIMARY KEY (id))");
         }
 
         public function addUser($email,$password) {
@@ -29,6 +30,22 @@
             $now = date( 'Y-m-d H:i:s');
             if ($this->findUser($name) != null) throw new Exception("Username already exists!");
             mysqli_query($this->conn,"INSERT INTO users VALUES (NULL,'$email','','$hash','$now')");
+        }
+
+        public function getProperty($user,$property) {
+            $result = mysqli_query($this->conn,"SELECT * FROM user_game_data WHERE user_id=$user AND property='$property'");
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) == 0) return null;
+            return $data[0]['value'];
+        }
+
+        public function setProperty($user,$property,$value) {
+            $existing = $this->getProperty($user,$property);
+            if ($existing == null) {
+                mysqli_query($this->conn,"INSERT INTO user_game_data VALUES (NULL,$user,'$property','$value')");
+            } else {
+                mysqli_query($this->conn,"UPDATE user_game_data SET value='$value' WHERE user_id=$user AND property='$property'");
+            }
         }
 
         public function authenticate($email,$password) {
