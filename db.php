@@ -23,6 +23,8 @@
         public function createTables() {
             mysqli_query($this->conn,"CREATE TABLE users (id MEDIUMINT NOT NULL AUTO_INCREMENT, email VARCHAR(255), display VARCHAR(255),passwordhash VARCHAR(255),created DATETIME,PRIMARY KEY (id))");
             mysqli_query($this->conn,"CREATE TABLE user_game_data (id MEDIUMINT NOT NULL AUTO_INCREMENT, user_id MEDIUMINT NOT NULL, property VARCHAR(255), value VARCHAR(255),PRIMARY KEY (id))");
+            mysqli_query($this->conn,"CREATE TABLE server_list (public_address CHAR(16) NOT NULL, heartbeat TIMESTAMP NOT NULL, PRIMARY KEY (public_address))");
+            mysqli_query($this->conn,"CREATE TABLE server_clients (public_address CHAR(16) NOT NULL, private_address CHAR(16) NOT NULL, heartbeat TIMESTAMP NOT NULL, PRIMARY KEY (private_address))");
         }
 
         public function addUser($email,$password) {
@@ -45,6 +47,75 @@
                 mysqli_query($this->conn,"INSERT INTO user_game_data VALUES (NULL,$user,'$property','$value')");
             } else {
                 mysqli_query($this->conn,"UPDATE user_game_data SET value='$value' WHERE user_id=$user AND property='$property'");
+            }
+        }
+
+        public function getDatabaseTime() {
+            $result = mysqli_query($this->conn,"SELECT now()");
+            $data = mysqli_fetch_all($result);
+            return $data[0][0];
+        }
+
+        public function getActiveServers() {
+            $now = strtotime($this->getDatabaseTime());
+            $result = mysqli_query($this->conn,"SELECT * FROM server_list");
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) == 0) return [];
+
+            $activeServers = array();
+            foreach ($data as $row) {
+                $date = strtotime($row['heartbeat']);
+                $delta = $now - $date;
+                if ($delta <= 10) $activeServers[] = $row['public_address'];
+            }
+            return $activeServers;
+        }
+
+        public function getClients($publicAddress) {
+            $now = strtotime($this->getDatabaseTime());
+            $result = mysqli_query($this->conn,"SELECT * FROM server_clients WHERE public_address='$publicAddress'");
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) == 0) return null;
+
+            $activeClients = array();
+            foreach ($data as $row) {
+                $date = strtotime($row['heartbeat']);
+                $delta = $now - $date;
+                if ($delta <= 10) $activeClients[] = $row['public_address'];
+            }
+            return $activeClients;
+        }
+
+        public function getClient($publicAddress,$privateAddress) {
+            $result = mysqli_query($this->conn,"SELECT * FROM server_clients WHERE public_address='$publicAddress' AND private_address='$privateAddress'");
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) == 0) return null;
+            return $data[0]['heartbeat'];
+        }
+
+        public function addClient($publicAddress,$privateAddress) {
+            $existing = $this->getClient($publicAddress,$privateAddress);
+
+            if ($existing == null) {
+                mysqli_query($this->conn,"INSERT INTO server_clients VALUES('$publicAddress','$privateAddress',now())");
+            } else {
+                mysqli_query($this->conn,"UPDATE server_clients SET heartbeat=now() WHERE public_address='$publicAddress' AND private_address='$privateAddress'");
+            }
+        }
+
+        public function findServer($publicAddress) {
+            $result = mysqli_query($this->conn,"SELECT heartbeat FROM server_list WHERE public_address='$publicAddress'");
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) == 0) return null;
+            return $data[0]['heartbeat'];
+        }
+
+        public function refreshServer($publicAddress) {
+            $heartbeat = $this->findServer($publicAddress);
+            if ($heartbeat == null) {
+                mysqli_query($this->conn,"INSERT INTO server_list VALUES ('$publicAddress',now())");
+            } else {
+                mysqli_query($this->conn,"UPDATE server_list SET heartbeat=now() WHERE public_address='$publicAddress'");
             }
         }
 
