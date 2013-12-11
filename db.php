@@ -81,7 +81,7 @@
             foreach ($data as $row) {
                 $date = strtotime($row['heartbeat']);
                 $delta = $now - $date;
-                if ($delta <= 10) $activeClients[] = $row['public_address'];
+                if ($delta <= 10) $activeClients[] = $row['private_address'];
             }
             return $activeClients;
         }
