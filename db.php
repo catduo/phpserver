@@ -37,7 +37,7 @@
         public function newUser() {
             $now = date( 'Y-m-d H:i:s');
             mysqli_query($this->conn,"INSERT INTO users VALUES (NULL,'','','','$now')");
-            $result = mysqli_query($this->conn,"SELECT * FROM user_game_data WHERE created = '$now'");
+            $result = mysqli_query($this->conn,"SELECT * FROM users WHERE created = '$now'");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             if (count($data) == 0) return null;
             return $data[0]['user_id'];
