@@ -13,20 +13,6 @@
             mysqli_select_db($this->conn,$dbname);
         }
 
-        public function resetDatabase() {
-            mysqli_query($this->conn,"DROP DATABASE $this->dbname");
-            mysqli_query($this->conn,"CREATE DATABASE $this->dbname");
-            mysqli_select_db($this->conn,$this->dbname);
-            $this->createTables();
-        }
-
-        public function createTables() {
-            mysqli_query($this->conn,"CREATE TABLE users (id MEDIUMINT NOT NULL AUTO_INCREMENT, email VARCHAR(255), display VARCHAR(255),passwordhash VARCHAR(255),created DATETIME,PRIMARY KEY (id))");
-            mysqli_query($this->conn,"CREATE TABLE user_game_data (id MEDIUMINT NOT NULL AUTO_INCREMENT, user_id MEDIUMINT NOT NULL, property VARCHAR(255), value VARCHAR(255),PRIMARY KEY (id))");
-            mysqli_query($this->conn,"CREATE TABLE server_list (public_address CHAR(16) NOT NULL, heartbeat TIMESTAMP NOT NULL, PRIMARY KEY (public_address))");
-            mysqli_query($this->conn,"CREATE TABLE server_clients (public_address CHAR(16) NOT NULL, private_address CHAR(16) NOT NULL, heartbeat TIMESTAMP NOT NULL, PRIMARY KEY (private_address))");
-        }
-
         public function addUser($email,$password) {
             $hash = crypt($password);
             $now = date( 'Y-m-d H:i:s');
@@ -43,21 +29,49 @@
             return $data[0]['user_id'];
         }
 
-        public function getProperty($user,$property) {
-            $result = mysqli_query($this->conn,"SELECT * FROM user_game_data WHERE user_id=$user AND property='$property'");
+        public function getStat($user,$property) {
+            $result = mysqli_query($this->conn,"SELECT * FROM games.games_data WHERE user_id=$user AND property='$property'");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             if (count($data) == 0) return null;
             return $data[0]['value'];
         }
 
-        public function setProperty($user,$property,$value) {
-            $existing = $this->getProperty($user,$property);
+        public function saveStat($user,$property,$value) {
+            $existing = $this->getStat($user,$property);
             if ($existing == null) {
                 mysqli_query($this->conn,"INSERT INTO user_game_data VALUES (NULL,$user,'$property','$value')");
             } else {
                 mysqli_query($this->conn,"UPDATE user_game_data SET value='$value' WHERE user_id=$user AND property='$property'");
             }
         }
+	
+	public function getGames($user){
+		
+	}
+
+	public function saveGame($user, $gameID, $gameData){
+		
+	}
+	
+	public function setInvites($user, $gameID){
+
+	}
+
+	public function loadGame($user, $gameID){
+
+	}
+
+	public function newGame($user, $gameID){
+	
+	}
+
+	public function getDeviceID($user, $gameID){
+
+	}
+
+	public function checkUsername($user, $username){
+
+	}
 
         public function getDatabaseTime() {
             $result = mysqli_query($this->conn,"SELECT now()");
