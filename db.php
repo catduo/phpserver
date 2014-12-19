@@ -32,7 +32,7 @@
 		}
 		
 		public function checkUsername($checkUsername){
-			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Username= ?");
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Username = ?");
 			mysqli_stmt_bind_param($stmt, 's', $checkUsername);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
