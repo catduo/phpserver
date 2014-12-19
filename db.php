@@ -7,7 +7,7 @@
         }
 		
 		public function ping($test){
-            $result = mysqli_query($this->conn,"INSERT INTO games.games SET GameName = 'test', GameState = " + $test);
+            $result = mysqli_query($this->conn,"INSERT INTO games.games SET GameName = 'test', GameState = '" + $test + "'");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             return mysqli_insert_id($this->conn);
 		}
