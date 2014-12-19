@@ -7,7 +7,7 @@
         }
 		
 		public function ping($test){
-            $result = mysqli_query($this->conn,"Select * from games.games_stats where Domain = 'BugReport'");
+            $result = mysqli_query($this->conn,"Select * from games.games_stats where Domain = " + $test);
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             return $data[0]["Species"];
 		}
