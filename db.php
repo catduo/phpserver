@@ -15,12 +15,8 @@
 			echo "\r\n";
 			echo $data[0]['PasswordHash'];
 			echo "\r\n";
-			if(password_verify($test, $data[0]['PasswordHash'])){
-				echo "valid";
-			}
-			else{
-				echo "nope, not";
-			}
+			$hash = crypt($test, $data[0]['PasswordHash']);
+			echo $hash;
             if (count($data) == 0) return 'true';
 			return 'false';
 		}
