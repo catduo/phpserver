@@ -7,11 +7,11 @@
 		echo $data[0]['JoviosID'];
 		echo ",'DeviceID':";
 		echo $data[0]['DeviceID'];
-		echo ",'Email':";
+		echo ",'Email':'";
 		echo $data[0]['Email'];
-		echo ",'Username':";
+		echo "','Username':'";
 		echo $data[0]['Username'];
-		echo "}]}";
+		echo "'}]}";
 	}
 	else{
 		echo "must be a post with username and password";
