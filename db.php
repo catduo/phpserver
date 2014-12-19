@@ -7,8 +7,7 @@
         }
 		
 		public function ping($test){
-            $result = mysqli_query($this->conn,"INSERT INTO games.games SET GameName = 'test', GameState = '" + $test + "'");
-            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            $result = mysqli_query($this->conn,"INSERT INTO games.games SET GameName = 'test', GameState = 'ping test'");
             return mysqli_insert_id($this->conn);
 		}
 
@@ -30,7 +29,7 @@
             if (count($data) == 0) return true;
 			return false;
 		}
-		/*
+
 		public function registerEmail(){
 			
 		}
@@ -228,8 +227,5 @@
         public function close() {
             mysqli_close($this->conn);
         }
-		 
-		 */
-    
     }
 ?>
