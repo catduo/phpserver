@@ -7,7 +7,7 @@
         }
 		
 		public function ping($test){
-            $result = mysqli_query($this->conn,"INSERT INTO games.games_stats SET Domain = " + $test);
+            $result = mysqli_query($this->conn,"INSERT INTO games.games_stats SET Domain = '" + $test + "'");
             return $result;
 		}
 
