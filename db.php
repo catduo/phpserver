@@ -13,7 +13,7 @@
     		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
 			echo '\n';
-			echo $data[0];
+			echo $data[0]['PasswordHash'];
 			echo '\n';
 			$options = [
 				'salt'=>4,
