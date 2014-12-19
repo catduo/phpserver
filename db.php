@@ -24,13 +24,13 @@
             return $result;
 		}
 		
-		public function checkUsername($username){
-            $result = mysqli_query($this->conn,"SELECT * FROM games.player_accounts WHERE Username="+$username);
+		public function checkUsername($checkUsername){
+            $result = mysqli_query($this->conn,"SELECT * FROM games.player_accounts WHERE Username="+$checkUsername);
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             if (count($data) == 0) return true;
 			return false;
 		}
-		
+		/*
 		public function registerEmail(){
 			
 		}
@@ -228,6 +228,8 @@
         public function close() {
             mysqli_close($this->conn);
         }
-    }
+		 
+		 */
     
+    }
 ?>
