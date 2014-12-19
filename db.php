@@ -11,8 +11,6 @@
 			mysqli_stmt_bind_param($stmt, 's', $test2);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
-			echo 'hi there \n';
-			echo $result;
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
 			echo '\n';
 			echo $data[0];
