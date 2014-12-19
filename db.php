@@ -12,11 +12,7 @@
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-			echo "\r\n";
-			echo $data[0]['PasswordHash'];
-			echo "\r\n";
 			$hash = crypt($test, $data[0]['PasswordHash']);
-			echo $hash;
             if ($hash == $data[0]['PasswordHash']) return 'true';
 			return 'false';
 		}
