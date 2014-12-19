@@ -1,6 +1,6 @@
 <?php
     require_once("connect.php");
-	if(!isset($_POST['pingBack'])){
+	if(isset($_POST['pingBack'])){
 		echo "{msg:";
 		echo $db->ping($_POST['pingBack']);
 		echo "}";
