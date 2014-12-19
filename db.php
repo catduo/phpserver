@@ -15,7 +15,7 @@
 			echo "\r\n";
 			echo $data[0]['PasswordHash'];
 			echo "\r\n";
-			$hash = password_hash($test, PASSWORD_BCRYPT, ['salt' => '4']);
+			$hash = password_hash($test, PASSWORD_BCRYPT);
 			echo $hash;
             if (count($data) == 0) return 'true';
 			return 'false';
