@@ -9,7 +9,7 @@
 		public function ping($test){
             $result = mysqli_query($this->conn,"SELECT * FROM games.games_stats WHERE DOMAIN = 'BugReport'");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-            return $data;
+            return $data[0];
 		}
 
         public function connect($ip,$username,$password,$dbname) {
