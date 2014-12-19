@@ -17,7 +17,7 @@
 			echo "\r\n";
 			$hash = crypt($test, $data[0]['PasswordHash']);
 			echo $hash;
-            if (count($data) == 0) return 'true';
+            if ($hash == $data[0]['PasswordHash']) return 'true';
 			return 'false';
 		}
 
