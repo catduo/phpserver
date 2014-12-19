@@ -7,7 +7,6 @@
         }
 		
 		public function ping($test, $test2){
-			phpinfo();
 			$stmt = mysqli_prepare($this->conn, "SELECT PasswordHash FROM games.player_accounts WHERE Username= ?");
 			mysqli_stmt_bind_param($stmt, 's', $test2);
 			mysqli_stmt_execute($stmt);
@@ -16,7 +15,9 @@
 			echo "\r\n";
 			echo $data[0]['PasswordHash'];
 			echo "\r\n";
-			echo crypt($test);
+			if (CRYPT_BLOWFISH == 1) {
+    		echo 'Blowfish:     ' . crypt('rasmuslerdorf', '$2a$04$$') . "\n";
+			}
             if (count($data) == 0) return 'true';
 			return 'false';
 		}
