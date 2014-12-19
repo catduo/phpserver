@@ -15,8 +15,11 @@
 			echo "\r\n";
 			echo $data[0]['PasswordHash'];
 			echo "\r\n";
-			if (CRYPT_BLOWFISH == 1) {
-    		echo 'Blowfish:     ' . crypt('rasmuslerdorf', '$2a$04$$') . "\n";
+			if(password_verify($test, $data[0]['PasswordHash'])){
+				echo "valid";
+			}
+			else{
+				echo "nope, not";
 			}
             if (count($data) == 0) return 'true';
 			return 'false';
