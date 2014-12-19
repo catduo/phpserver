@@ -1,4 +1,4 @@
 <?php
     require_once("connect.php");
-	echo $db->ping("BugReport");
+	echo $db->ping("dgeisert");
 

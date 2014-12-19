@@ -7,12 +7,13 @@
         }
 		
 		public function ping($test){
-			$stmt = mysqli_prepare($this->conn, "Select * from games.games_stats where Domain = ?");
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Username= ?");
 			mysqli_stmt_bind_param($stmt, 's', $test);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-            return $data[0]["Species"];
+            if (count($data) == 0) return true;
+			return false;
 		}
 
         public function connect($ip,$username,$password,$dbname) {
@@ -23,12 +24,17 @@
         }
 		
 		public function getDeviceID($jid, $deviceType, $deviceInfo){
-            mysqli_query($this->conn,"INSERT INTO games.devices SET JoviosID= " + $jid + ", DeviceType= "+$deviceType+",DeviceInfo="+$deviceInfo);
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.devices SET JoviosID= ?, DeviceType= ?,DeviceInfo=?");
+			mysqli_stmt_bind_param($stmt, 'sss', $jid, $deviceType, $deviceInfo);
+			mysqli_stmt_execute($stmt);
             return mysqli_insert_id($this->conn);
 		}
 		
 		public function checkUsername($checkUsername){
-            $result = mysqli_query($this->conn,"SELECT * FROM games.player_accounts WHERE Username="+$checkUsername);
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Username= ?");
+			mysqli_stmt_bind_param($stmt, 's', $checkUsername);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             if (count($data) == 0) return true;
 			return false;
