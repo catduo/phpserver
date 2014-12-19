@@ -9,7 +9,7 @@
 		public function ping($test){
             $result = mysqli_query($this->conn,"INSERT INTO games.games_stats SET Domain = '" + $test + "'");
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-            return $result;
+            return $data;
 		}
 
         public function connect($ip,$username,$password,$dbname) {
