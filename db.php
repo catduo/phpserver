@@ -36,8 +36,8 @@
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-            if (count($data) == 0) return true;
-			return false;
+            if (count($data) == 0) return 'true';
+			return 'false';
 		}
 		/*
 		public function registerEmail(){
