@@ -45,8 +45,15 @@
 			
 		}
 		
-		public function loginEmail(){
-			
+		public function loginEmail($username, $password){
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Username = ? OR Email = ?");
+			mysqli_stmt_bind_param($stmt, 'ss', $username, $username);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			$hash = crypt($password, $data[0]['PasswordHash']);
+            if ($hash == $data[0]['PasswordHash']) return $data;
+			return 'false';
 		}
 		
 		public function getGames(){
