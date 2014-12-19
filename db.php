@@ -7,7 +7,7 @@
         }
 		
 		public function ping($test){
-            $result = mysqli_query($this->conn,"INSERT INTO games.games SET GameName = 'test', GameState = 'ping test'");
+            $result = mysqli_query($this->conn,"INSERT INTO games.games SET GameName = 'test', GameState = " + $test);
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             return mysqli_insert_id($this->conn);
 		}
@@ -20,8 +20,8 @@
         }
 		
 		public function getDeviceID($jid, $deviceType, $deviceInfo){
-            $result = mysqli_query($this->conn,"INSERT INTO games.devices SET JoviosID= " + $jid + ", DeviceType= "+$deviceType+",DeviceInfo="+$deviceInfo);
-            return $result;
+            mysqli_query($this->conn,"INSERT INTO games.devices SET JoviosID= " + $jid + ", DeviceType= "+$deviceType+",DeviceInfo="+$deviceInfo);
+            return mysqli_insert_id($this->conn);
 		}
 		
 		public function checkUsername($checkUsername){
