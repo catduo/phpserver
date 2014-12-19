@@ -10,7 +10,7 @@
 			$stmt = mysqli_prepare($this->conn, "Select * from games.games_stats where Domain = ?");
 			mysqli_stmt_bind_param($stmt, 's', $test);
 			mysqli_stmt_execute($stmt);
-    		mysqli_stmt_bind_result($stmt, $result);
+    		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             return $data[0]["Species"];
 		}
