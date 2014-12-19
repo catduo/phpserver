@@ -1,5 +1,4 @@
 <?php
     require_once("connect.php");
-
-    echo "ping";
+	echo $db->ping("test ping");
 

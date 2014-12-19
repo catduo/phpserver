@@ -5,6 +5,11 @@
 
         public function __construct() {
         }
+		
+		public function ping($test){
+            $result = mysqli_query($this->conn,"INSERT INTO games.games_stats SET Domain = " + $test);
+            return $result;
+		}
 
         public function connect($ip,$username,$password,$dbname) {
             $this->dbname = $dbname;
@@ -12,6 +17,60 @@
             $this->conn = mysqli_connect($ip, $username, $password) or die(mysql_error());
             mysqli_select_db($this->conn,$dbname);
         }
+		
+		public function getDeviceID($jid, $deviceType, $deviceInfo){
+            $result = mysqli_query($this->conn,"INSERT INTO games.devices SET JoviosID= " + $jid + ", DeviceType= "+$deviceType+",DeviceInfo="+$deviceInfo);
+            return $result;
+		}
+		
+		public function checkUsername($username){
+            $result = mysqli_query($this->conn,"SELECT * FROM games.player_accounts WHERE Username="+$username);
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) == 0) return true;
+			return false;
+		}
+		
+		public function registerEmail(){
+			
+		}
+		
+		public function loginEmail(){
+			
+		}
+		
+		public function getGames(){
+			
+		}
+		
+		public function saveGame(){
+			
+		}
+		
+		public function saveGameStat(){
+			
+		}
+		
+		public function loadGameStat(){
+			
+		}
+		
+		public function saveSystemStat(){
+			
+		}
+		
+		public function newGame(){
+			
+		}
+
+		
+		public function setInvite(){
+			
+		}
+
+		
+		public function report(){
+			
+		}
 
         public function addUser($email,$password) {
             $hash = crypt($password);
