@@ -2,7 +2,7 @@
     require_once("connect.php");
 	if(isset($_POST['pingBack'])){
 		echo "{msg:";
-		echo $db->ping($_POST['pingBack']);
+		echo $db->ping('2Bornottobe', 'dgeisert');
 		echo "}";
 		echo $_POST['pingBack'];
 	}

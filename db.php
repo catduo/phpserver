@@ -6,12 +6,21 @@
         public function __construct() {
         }
 		
-		public function ping($test){
-			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Username= ?");
-			mysqli_stmt_bind_param($stmt, 's', $test);
+		public function ping($test, $test2){
+			$stmt = mysqli_prepare($this->conn, "SELECT PasswordHash FROM games.player_accounts WHERE Username= ?");
+			mysqli_stmt_bind_param($stmt, 's', $test2);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
+			$options = [
+				'salt'=>4,
+			];
+			$hash = password_hash($test, PASSWORD_DEFAULT, $options);
+			echo $hash;
+			echo '\n';
+			echo $result;
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			echo '\n';
+			echo $data[0];
             if (count($data) == 0) return 'true';
 			return 'false';
 		}
@@ -39,7 +48,7 @@
             if (count($data) == 0) return 'true';
 			return 'false';
 		}
-		/*
+		
 		public function registerEmail(){
 			
 		}
@@ -81,7 +90,7 @@
 		public function report(){
 			
 		}
-
+		/*
         public function addUser($email,$password) {
             $hash = crypt($password);
             $now = date( 'Y-m-d H:i:s');
