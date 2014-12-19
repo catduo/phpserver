@@ -29,7 +29,7 @@
             if (count($data) == 0) return true;
 			return false;
 		}
-
+		/*
 		public function registerEmail(){
 			
 		}
@@ -227,5 +227,8 @@
         public function close() {
             mysqli_close($this->conn);
         }
+		 
+		 */
+    
     }
 ?>
