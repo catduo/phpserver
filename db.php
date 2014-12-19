@@ -7,7 +7,7 @@
         }
 		
 		public function ping($test, $test2){
-			php_info();
+			phpinfo();
 			$stmt = mysqli_prepare($this->conn, "SELECT PasswordHash FROM games.player_accounts WHERE Username= ?");
 			mysqli_stmt_bind_param($stmt, 's', $test2);
 			mysqli_stmt_execute($stmt);
