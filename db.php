@@ -11,16 +11,17 @@
 			mysqli_stmt_bind_param($stmt, 's', $test2);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
+			echo 'hi there \n';
+			echo $result;
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			echo '\n';
+			echo $data[0];
+			echo '\n';
 			$options = [
 				'salt'=>4,
 			];
 			$hash = password_hash($test, PASSWORD_DEFAULT, $options);
 			echo $hash;
-			echo '\n';
-			echo $result;
-            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-			echo '\n';
-			echo $data[0];
             if (count($data) == 0) return 'true';
 			return 'false';
 		}
