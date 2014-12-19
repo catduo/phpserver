@@ -1,7 +1,7 @@
 <?php
     require_once("connect.php");
 	if(isset($_POST['password']) && isset($_POST['username'])){
-		echo "{msg:[{";
+		echo "{'msg':[{";
 		$data = $db->loginEmail($_POST['username'], $_POST['password']);
 		echo "'JoviosID':";
 		echo $data[0]['JoviosID'];
