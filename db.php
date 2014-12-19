@@ -12,10 +12,10 @@
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-			echo '\r';
+			echo "\r\n";
 			echo $data[0]['PasswordHash'];
-			echo '\r';
-			$hash = password_hash($test, PASSWORD_DEFAULT, ['salt' => '4']);
+			echo "\r\n";
+			$hash = password_hash($test, PASSWORD_BCRYPT, ['salt' => '4']);
 			echo $hash;
             if (count($data) == 0) return 'true';
 			return 'false';
