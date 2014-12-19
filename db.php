@@ -16,7 +16,7 @@
 			echo $data[0]['PasswordHash'];
 			echo '\n';
 			$options = [
-				'salt'=>4,
+				'salt' => '4',
 			];
 			$hash = password_hash($test, PASSWORD_DEFAULT, $options);
 			echo $hash;
