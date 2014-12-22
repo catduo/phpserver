@@ -116,9 +116,7 @@
 		}
 		
 		public function loadGameStat($where){
-			$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE " + $where);
-			mysqli_stmt_execute($stmt);
-    		$result = $stmt->get_result();
+            $result = mysqli_query($this->conn, "Select * FROM games.games_stats WHERE " + $where);
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
 			return $data;
 		}
