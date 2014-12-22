@@ -3,7 +3,7 @@
 	if(isset($_POST['where'])){
 		echo"{'msg':[";
 		
-		$data = $db->saveGame($_POST['where']);
+		$data = $db->loadGameStat($_POST['where']);
 		
 		$once = true;
 		foreach($data as $game){
