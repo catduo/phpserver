@@ -88,7 +88,16 @@
 			return $data;
 		}
 		
-		public function saveGame($gameID, $gameName, $gameState){
+		public function newGame($gameName){
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games Set GameName = ?");
+			mysqli_stmt_bind_param($stmt, 's', $gameName);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return mysqli_insert_id($this->conn);
+		}
+		
+		public function saveGame($gameName, $gameID, $gameState){
 			$stmt = mysqli_prepare($this->conn, "REPLACE INTO games.games SET GameID = ?, GameName = ?, GameState = ?");
 			mysqli_stmt_bind_param($stmt, 'iss', $gameID, $gameName, $gameState);
 			mysqli_stmt_execute($stmt);
