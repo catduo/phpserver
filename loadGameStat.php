@@ -1,9 +1,9 @@
 <?php
     require_once("connect.php");
-	if(isset($_POST['gameName']) && isset($_POST['where'])){
+	if(isset($_POST['where'])){
 		echo"{'msg':[";
 		
-		$data = $db->saveGame($_POST['gameName'], $_POST['where']);
+		$data = $db->saveGame($_POST['where']);
 		
 		$once = true;
 		foreach($data as $game){

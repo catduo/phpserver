@@ -115,9 +115,9 @@
 			return $data;
 		}
 		
-		public function loadGameStat($gameName, $where){
+		public function loadGameStat($where){
 			if(!strpos($where, ";")){
-				$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE GameName = ? AND " + $where);
+				$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE " + $where);
 				mysqli_stmt_bind_param($stmt, 's', $gameName);
 				mysqli_stmt_execute($stmt);
 	    		$result = $stmt->get_result();
