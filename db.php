@@ -117,11 +117,13 @@
 		
 		public function loadGameStat($where){
 			if(!strpos($where, ";")){
+				echo "Select * FROM games.games_stats WHERE " + $where;
 				$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE " + $where);
 				mysqli_stmt_bind_param($stmt, 's', $gameName);
 				mysqli_stmt_execute($stmt);
 	    		$result = $stmt->get_result();
 	            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+				echo $data[0]['Species'];
 				return $data;
 			}
 			return 'false';

@@ -17,10 +17,10 @@
 			
 			echo "'GameID':";
 			echo $game['GameID'];
-			echo ",'GameState':'";
+			echo ",'GameState':";
 			echo $game['GameState'];
 			
-			echo"'}";
+			echo"}";
 		}
 		
 		echo "]}";
