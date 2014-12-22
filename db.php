@@ -116,15 +116,12 @@
 		}
 		
 		public function loadGameStat($where){
-			if(!strpos($where, ";")){
-				$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE " + $where);
-				mysqli_stmt_bind_param($stmt, 's', $gameName);
-				mysqli_stmt_execute($stmt);
-	    		$result = $stmt->get_result();
-	            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-				return $data;
-			}
-			return 'false';
+			$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE " + $where);
+			mysqli_stmt_bind_param($stmt, 's', $gameName);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
 		}
 		
 		public function saveSystemStat($joviosID, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species){
