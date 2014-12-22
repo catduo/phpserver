@@ -1,14 +1,28 @@
 <?php
     require_once("connect.php");
 
-    if (!isset($_POST['id']) or !isset($_POST['property'])) {
-        header('HTTP/1.0 500 Bad Request');
-        return;
-    }
-
-    if (isset($_POST['value'])) {
-        $db->setProperty($_POST['id'],$_POST['property'],$_POST['value']);
-    } else {
-        echo $db->getProperty($_POST['id'],$_POST['property']);
+    if (isset($_POST['JoviosID'])) {
+    	echo "{'msg':[";
+		
+        $data = $db->getGames($_POST['JoviosID']);
+		$once = true;
+		foreach($data as $game){
+			if($once){
+				$once = false;
+			}
+			else{
+				echo ",";
+			}
+			echo"{";
+			
+			echo "'GameID':";
+			echo $game['GameID'];
+			echo ",'GameState':'";
+			echo $game['GameState'];
+			
+			echo"'}";
+		}
+		
+		echo "]}";
     }
 

@@ -41,8 +41,31 @@
 			return 'false';
 		}
 		
-		public function registerEmail(){
-			
+		public function registerEmail($email, $username, $password){
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.player_accounts WHERE Email = ?");
+			mysqli_stmt_bind_param($stmt, 's', $email);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            if (count($data) > 0){
+				$hash = crypt($password, $data[0]['PasswordHash']);
+	            if ($hash == $data[0]['PasswordHash']){
+					$stmt = mysqli_prepare($this->conn, "INSERT INTO games.player_accounts SET Username = ?, Email = ?, PasswordHash = ?");
+					mysqli_stmt_bind_param($stmt, 'sss', $username, $email, $hash);
+					mysqli_stmt_execute($stmt);
+	            	return mysqli_insert_id($this->conn);
+	            }
+				else{
+					return 'false';
+				}
+			}
+			else{
+				$hash = crypt($password, '$2a$04$joviospasswordsaltmidsecu$');
+				$stmt = mysqli_prepare($this->conn, "INSERT INTO games.player_accounts SET Username = ?, Email = ?, PasswordHash = ?");
+				mysqli_stmt_bind_param($stmt, 'sss', $username, $email, $hash);
+				mysqli_stmt_execute($stmt);
+            	return mysqli_insert_id($this->conn);
+			}
 		}
 		
 		public function loginEmail($username, $password){
@@ -56,38 +79,87 @@
 			return 'false';
 		}
 		
-		public function getGames(){
-			
+		public function getGames($joviosID){
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.games WHERE GameID IN(SELECT GameID FROM games.games_lookup_by_player WHERE JoviosID = ?)");
+			mysqli_stmt_bind_param($stmt, 'i', $joviosID);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
 		}
 		
-		public function saveGame(){
-			
+		public function saveGame($gameID, $gameName, $gameState){
+			$stmt = mysqli_prepare($this->conn, "REPLACE INTO games.games SET GameID = ?, GameName = ?, GameState = ?");
+			mysqli_stmt_bind_param($stmt, 'iss', $gameID, $gameName, $gameState);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
 		}
 		
-		public function saveGameStat(){
-			
+		public function loadGame($gameID){
+			$stmt = mysqli_prepare($this->conn, "SELECT * FROM games.games WHERE GameID = ?");
+			mysqli_stmt_bind_param($stmt, 'i', $gameID);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
 		}
 		
-		public function loadGameStat(){
-			
+		public function saveGameStat($joviosID, $gameName, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species){
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games_stats SET JoviosID = ?, DeviceID = ?, GameName = ?, Domain = ?, Kingdom = ?, Phylum = ?, Order = ?, Class = ?, Family = ?, Genus = ?, Species = ?");
+			mysqli_stmt_bind_param($stmt, 'iisssssssss', $joviosID, $joviosID, $gameName, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
 		}
 		
-		public function saveSystemStat(){
-			
+		public function loadGameStat($gameName, $where){
+			if(!strpos($where, ";")){
+				$stmt = mysqli_prepare($this->conn, "Select * FROM games.games_stats WHERE GameName = ? AND " + $where);
+				mysqli_stmt_bind_param($stmt, 's', $gameName);
+				mysqli_stmt_execute($stmt);
+	    		$result = $stmt->get_result();
+	            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+				return $data;
+			}
+			return 'false';
 		}
 		
-		public function newGame(){
-			
+		public function saveSystemStat($joviosID, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species){
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games_stats SET JoviosID = ?, DeviceID = ?, Domain = ?, Kingdom = ?, Phylum = ?, Order = ?, Class = ?, Family = ?, Genus = ?, Species = ?");
+			mysqli_stmt_bind_param($stmt, 'iissssssss', $joviosID, $joviosID, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
+		}
+		
+		public function newGame($gameName){
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games Set GameName = ?");
+			mysqli_stmt_bind_param($stmt, 's', $gameName);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return mysqli_insert_id($this->conn);
 		}
 
 		
-		public function setInvite(){
+		public function setInvite($username, $gameID){
+			$username = "Username = '" + $username + "' OR Email = '" + $username + "';";
+			$stmt = mysqli_prepare($this->conn, "SELECT JoviosID FROM games.player_accounts WHERE " + $username);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			$joviosID = $data[0]['JoviosID'];
 			
-		}
-
-		
-		public function report(){
-			
+			$stmt = mysqli_prepare($this->conn, "REPLACE INTO games.games_lookup_by_player Set JoviosID = ?, DeviceID = ?, GameID = ?");
+			mysqli_stmt_bind_param($stmt, 'iii', $joviosID, $joviosID, $gameID);
+			mysqli_stmt_execute($stmt);
+    		$result = $stmt->get_result();
+            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return mysqli_insert_id($this->conn);
 		}
 		/*
         public function addUser($email,$password) {
