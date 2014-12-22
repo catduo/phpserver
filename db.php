@@ -151,8 +151,8 @@
 			mysqli_stmt_bind_param($stmt, 'iii', $joviosID, $joviosID, $gameID);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
-            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-			return mysqli_insert_id($this->conn);
+            $data2 = mysqli_fetch_all($result,MYSQLI_ASSOC);
+			return $data;
 		}
 		/*
         public function addUser($email,$password) {
