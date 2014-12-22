@@ -139,16 +139,6 @@
 			return $data;
 		}
 		
-		public function newGame($gameName){
-			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games Set GameName = ?");
-			mysqli_stmt_bind_param($stmt, 's', $gameName);
-			mysqli_stmt_execute($stmt);
-    		$result = $stmt->get_result();
-            $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
-			return mysqli_insert_id($this->conn);
-		}
-
-		
 		public function setInvite($username, $gameID){
 			$username = "Username = '" . $username . "' OR Email = '" . $username . "';";
 			$stmt = mysqli_prepare($this->conn, "SELECT JoviosID FROM games.player_accounts WHERE " . $username);
