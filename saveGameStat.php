@@ -8,6 +8,3 @@
 	else{
 		echo "post parameters not properly set";
 	}
-	if(isset($_POST['gameName'])){
-		echo $_POST['gameName'];
-	}
