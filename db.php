@@ -116,7 +116,7 @@
 		}
 		
 		public function saveGameStat($joviosID, $gameName, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species){
-			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games_stats SET JoviosID = ?, DeviceID = ?, GameName = ?, Domain = ?, Kingdom = ?, Phylum = ?, Order = ?, Class = ?, Family = ?, Genus = ?, Species = ?");
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games_stats SET JoviosID = ?, DeviceID = ?, GameName = ?, Domain = ?, Kingdom = ?, Phylum = ?, games_stats.Order = ?, Class = ?, Family = ?, Genus = ?, Species = ?");
 			mysqli_stmt_bind_param($stmt, 'iisssssssss', $joviosID, $joviosID, $gameName, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
@@ -131,7 +131,7 @@
 		}
 		
 		public function saveSystemStat($joviosID, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species){
-			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games_stats SET JoviosID = ?, DeviceID = ?, Domain = ?, Kingdom = ?, Phylum = ?, Order = ?, Class = ?, Family = ?, Genus = ?, Species = ?");
+			$stmt = mysqli_prepare($this->conn, "INSERT INTO games.games_stats SET JoviosID = ?, DeviceID = ?, Domain = ?, Kingdom = ?, Phylum = ?, games_stats.Order = ?, Class = ?, Family = ?, Genus = ?, Species = ?");
 			mysqli_stmt_bind_param($stmt, 'iissssssss', $joviosID, $joviosID, $domain, $kingdom, $phylum, $order, $class, $family, $genus, $species);
 			mysqli_stmt_execute($stmt);
     		$result = $stmt->get_result();
