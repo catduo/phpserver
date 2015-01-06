@@ -18,7 +18,12 @@
 			echo "'GameID':";
 			echo $game['GameID'];
 			echo ",'GameState':";
-			echo $game['GameState'];
+			if($game['GameState'] == NULL){
+				echo "'null'";
+			}
+			else{
+				echo $game['GameState'];
+			}
 			
 			echo"}";
 		}
