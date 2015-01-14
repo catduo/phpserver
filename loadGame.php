@@ -1,6 +1,6 @@
 <?php
     require_once("connect.php");
-	if(isset($_POST['joviodID']) && isset($_POST['deviceType']) && isset($_POST['deviceInfo'])){
+	if(isset($_POST['gameID'])){
     	echo "{'msg':[";
 		echo"{";
 		echo "'GameID':";
